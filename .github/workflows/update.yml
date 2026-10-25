@@ -31,7 +31,7 @@ jobs:
       matrix: { os: [macos-latest, ubuntu-latest] }
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: Homebrew/actions/setup-homebrew@master
+      - uses: Homebrew/actions/setup-homebrew@main
       - uses: actions/download-artifact@v4
         with: { name: formula, path: formula }
       - name: Install from a local copy of the tap
