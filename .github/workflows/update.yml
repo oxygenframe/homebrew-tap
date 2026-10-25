@@ -28,16 +28,16 @@ jobs:
     needs: update
     if: needs.update.outputs.changed == 'true' || github.event_name != 'schedule'
     strategy:
+      fail-fast: false
       matrix: { os: [macos-latest, ubuntu-latest] }
     runs-on: ${{ matrix.os }}
     steps:
+      # Links this checkout in as the oxygenframe/tap tap.
       - uses: Homebrew/actions/setup-homebrew@main
       - uses: actions/download-artifact@v4
-        with: { name: formula, path: formula }
-      - name: Install from a local copy of the tap
+        with: { name: formula, path: Formula }
+      - name: Install the new formula
         run: |
-          tap="$(brew --repository)/Library/Taps/oxygenframe/homebrew-tap"
-          mkdir -p "$tap/Formula" && cp formula/oxframe.rb "$tap/Formula/"
           brew install --formula oxygenframe/tap/oxframe
           brew test oxygenframe/tap/oxframe
           oxframe --version
